@@ -1,0 +1,147 @@
+swagger: "3.0.0"
+info:
+  description: "Redlit - for pet freaks!"
+  version: "1.0.0"
+  title: "Redlit"
+host: "localhost:8000"
+tags:
+- name: "redlits"
+  description: "Redlit threads, posts, comments"
+- name: "users"
+  description: "Redlit users"
+schemes:
+- "http"
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+security:
+- basicAuth: []
+paths:
+  /r:
+    get:
+      tags:
+      - "redlits"
+      summary: "List all threads"
+      operationId: "listThreads"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /r/{threadID}:
+    get:
+      tags:
+      - "redlits"
+      summary: "List posts under thread"
+      operationId: "listPosts"
+      parameters:
+      - name: "threadID"
+        in: "path"
+        description: "ID of thread to return"
+        required: true
+        type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+  /r/{threadID}/{postID}:
+    get:
+      tags:
+      - "redlits"
+      summary: "Show comments from posts"
+      operationId: "showComments"
+      parameters:
+      - name: "threadID"
+        in: "path"
+        description: "ID of thread"
+        required: true
+        type: "string"
+      - name: "postID"
+          in: "path"
+          description: "ID of post"
+          required: true
+          type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      tags:
+      - "redlits"
+      summary: "Publish new comment"
+      operationId: "publishComment"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object"
+        required: true
+        schema:
+          $ref: "#/definitions/Comment"
+  /u:
+    get:
+      tags:
+      - "users"
+      summary: "List all users"
+      operationId: "listUsers"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+    post:
+      tags:
+      - "users"
+      summary: "Add new user"
+      operationId: "addUser"
+      consumes:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "User object"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      reponses:
+        200:
+          description: "OK"
+  /u/{userID}:
+    get:
+      tags:
+      - "users"
+      summary: "List a user"
+      operationId: "listUser"
+      parameters:
+      - name: "userID"
+        in: "path"
+        description: "ID of thread"
+        required: true
+        type: "string"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+    delete:
+      tags:
+      - "users"
+      summary: "Delete user"
+      operationId: "deleteUser"
+      responses:
+        200:
+          description: "OK"
+definitions:
+  Comment:
+    type: "object"
+    properties:
+      id:
+        username:
+          type: "string"
+        message:
+          type: "string"
